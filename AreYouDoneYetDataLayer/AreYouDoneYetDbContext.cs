@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AreYouDoneYetModels;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal;
 using Microsoft.Extensions.Configuration;
 
@@ -6,6 +7,8 @@ namespace AreYouDoneYetDataLayer;
 
 public class AreYouDoneYetDbContext: DbContext
 {
+    public DbSet<Assignment> Assignments { get; set; }
+
     public AreYouDoneYetDbContext()
     {
         //blank
