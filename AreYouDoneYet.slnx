@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="AreYouDoneYet/AreYouDoneYet.csproj" />
+  <Project Path="AreYouDoneYetDataLayer/AreYouDoneYetDataLayer.csproj" />
+  <Project Path="AreYouDoneYetModels/AreYouDoneYetModels.csproj" />
+</Solution>

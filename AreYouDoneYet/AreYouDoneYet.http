@@ -1,0 +1,6 @@
+@AreYouDoneYet_HostAddress = http://localhost:5204
+
+GET {{AreYouDoneYet_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
