@@ -19,10 +19,11 @@ env:
   APP_NAME: 'ReactLiveDev'
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: 'production'
+    defaults:
+      run:
+        working-directory: ./backend
 
     steps:
       - uses: actions/checkout@v4
