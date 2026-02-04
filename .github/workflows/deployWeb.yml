@@ -36,7 +36,7 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Publish
-        run: dotnet publish -c Release -o ${{ github.workspace }}/publish
+        run: dotnet publish .\AreYouDoneYet\AreYouDoneYet.csproj -c Release -o ${{ github.workspace }}/publish
 
       - name: Login to Azure (OIDC)
         uses: azure/login@v2
