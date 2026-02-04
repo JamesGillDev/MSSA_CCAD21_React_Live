@@ -1,8 +1,30 @@
 .App {
   text-align: center;
   padding: 20px;
+  font-family: Arial, sans-serif;
 }
 
 h1 {
-  color: #333;
+  color: #0078d4;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: #f0f0f0;
+  margin: 10px auto;
+  padding: 15px;
+  border-radius: 8px;
+  max-width: 400px;
+}
+
+.error {
+  color: red;
+}
+
+.loading {
+  color: #666;
 }
