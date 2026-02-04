@@ -7,15 +7,12 @@ on:
   workflow_dispatch:
 
 permissions:
-      id-token: write
-      contents: read
+  id-token: write
+  contents: read
 
 env:
   DOTNET_VERSION: '10.x'
-  SECRET_CLIENT_ID: 'secret-in-the-future'
-  SECRET_TENANT_ID: 'secret-in-the-future'
-  SECRET_SUBSCRIPTION_ID: 'secret-in-the-future'
-  APP_NAME: 'your-app-name-goes-here'
+  APP_NAME: 'ReactLiveDev'
 
 jobs:
   build-and-deploy:
@@ -26,10 +23,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up .NET Core
+      - name: Set up .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Build with dotnet
+      - name: Build
         run: dotnet build --configuration Release
+
+      - name: Publish
+        run: dotnet publish -c Release -o ${{ github.workspace }}/publish
+
+      - name: Login to Azure (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.CLIENT_ID }}
+          tenant-id: ${{ secrets.TENANT_ID }}
+          subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.APP_NAME }}
+          package: ${{ github.workspace }}/publish
