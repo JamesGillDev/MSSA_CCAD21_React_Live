@@ -1,35 +1,42 @@
-name: Deploy ASP.NET Core app to Azure Web App - 2026 edition
+name: Deploy React Frontend to Azure Static Web Apps
 
 on:
   push:
     branches:
-      - main-no-way
+      - main
   workflow_dispatch:
 
 permissions:
-      id-token: write
-      contents: read
-
-env:
-  DOTNET_VERSION: '10.x'
-  SECRET_CLIENT_ID: 'secret-in-the-future'
-  SECRET_TENANT_ID: 'secret-in-the-future'
-  SECRET_SUBSCRIPTION_ID: 'secret-in-the-future'
-  APP_NAME: 'your-app-name-goes-here'
+  id-token: write
+  contents: read
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment:
-      name: 'Production'
+      name: 'production'
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          node-version: '20'
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Build React app
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "./frontend"
+          output_location: "build"
