@@ -45,4 +45,5 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_NICE_FLOWER_06023D81E }}
           action: "close"
-          app_location: "/" # App source code path (required input)
+          app_location: ".frontend/" # App source code path (required input)
+          output_location: "." # Built app content directory - optional
