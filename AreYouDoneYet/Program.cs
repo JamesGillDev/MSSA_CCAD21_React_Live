@@ -8,6 +8,23 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+// CORS configuration
+var allowedCorsHost = builder.Configuration
+    .GetSection("AllowedHostsCors")
+    .GetValue<string>("ReactHostBase")
+    ?? throw new InvalidOperationException("AllowedHostsCors:ReactHostBase configuration is required");
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReact", policy =>
+    {
+        policy.SetIsOriginAllowed(origin =>
+                new Uri(origin).Host.Equals(allowedCorsHost, StringComparison.OrdinalIgnoreCase))
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var connectionString = builder.Configuration.GetConnectionString("AreYouDoneYetDbConnection");
 builder.Services.AddDbContext<AreYouDoneYetDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -44,6 +61,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Enable CORS - add this BEFORE UseAuthorization
+app.UseCors("AllowReact");
 
 app.UseAuthorization();
 
